@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My-Todo-List</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    .text-shadow {
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .animate-blink {
+      animation: blink 1s step-end infinite;
+    }
+    #todo-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    #todo-list::-webkit-scrollbar-thumb {
+      background-color: rgba(255,255,255,0.3);
+      border-radius: 3px;
+    }
+  </style>
+
+  <script src="js/login.js" defer></script>
+  <script src="js/clock.js" defer></script>
+  <script src="js/quotes.js" defer></script>
+  <script src="js/background.js" defer></script>
+  <script src="js/todo.js" defer></script>
+  <script src="js/weather.js" defer></script>
+</head>
+<body class="flex flex-col h-screen justify-between items-center bg-gray-900 text-white font-sans overflow-hidden relative bg-cover bg-center">
+  
+  <div class="absolute inset-0 bg-black/40 -z-10"></div>
+
+  <div id="weather" class="absolute top-6 right-6 flex flex-col items-end text-shadow">
+    <span class="text-xl font-semibold"></span>
+    <span class="text-sm opacity-90"></span>
+  </div>
+
+  <main class="flex flex-col items-center justify-center flex-grow w-full max-w-2xl px-4 space-y-10 z-10 mt-20">
+    <h2 id="clock" class="text-8xl sm:text-9xl font-bold tracking-tighter text-shadow flex items-baseline">
+      <span id="clock-hour">00</span>
+      <span id="clock-second" class="animate-blink mx-2">:</span>
+      <span id="clock-minute">00</span>
+    </h2>
+
+    <div class="w-full flex flex-col items-center space-y-6">
+      <h1 id="greeting" class="text-4xl sm:text-5xl font-bold text-shadow hidden text-center"></h1>
+      <form id="login-form" class="w-full max-w-md hidden">
+        <input type="text" placeholder="What is your name?" maxlength="15" required
+          class="w-full bg-transparent border-b-2 border-white/60 focus:border-white outline-none text-center text-3xl sm:text-4xl pb-3 transition-all placeholder-white/60 text-shadow">
+      </form>
+    </div>
+
+    <div class="w-full max-w-xl flex flex-col items-center space-y-6">
+      <form id="todo-form" class="w-full">
+        <input type="text" placeholder="What is your main focus for today?" required
+          class="w-full bg-transparent border-b-2 border-white/60 focus:border-white outline-none text-center text-2xl sm:text-3xl pb-3 transition-all placeholder-white/60 text-shadow">
+      </form>
+      <ul id="todo-list" class="w-full max-h-72 overflow-y-auto space-y-3 px-2 py-2">
+        </ul>
+    </div>
+  </main>
+
+  <div id="quote" class="absolute bottom-8 flex flex-col items-center text-center text-shadow max-w-3xl px-6 z-10">
+    <span class="text-lg sm:text-xl italic mb-2 font-light"></span>
+    <span class="text-sm sm:text-base font-semibold opacity-90"></span>
+  </div>
+</body>
+</html>
