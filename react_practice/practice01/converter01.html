@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>React Practice</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      function App() {
+        const [amount, setAmount] = React.useState(0);
+        const [inverted, setInverted] = React.useState(false);
+        const onChange = (e) => {
+          setAmount(e.target.value);
+        };
+
+        const hours = Number((amount/60).toFixed(2));
+        const reset = () => setAmount(0);
+        const onInvert = () => {
+          reset();
+          setInverted((current) => !current);
+        } 
+        return (
+          <div>
+            <div>
+              <h1>Super Converter</h1>
+              <label htmlFor="minutes">Minutes</label>
+              <input id="minutes" value={inverted ? (amount*60) : amount} placeholder="Enter a Minutes" type="number" 
+              onChange={onChange} disabled={inverted} /> 
+            </div>
+            <div>
+              <label htmlFor="hours">Hours</label>
+              <input id="hours" value={inverted ? amount : hours} placeholder="Enter a Hours" type="number" 
+              onChange={onChange} disabled={!inverted} />
+            </div>
+            <button onClick={reset}>Reset</button>            
+            <button onClick={onInvert}>{inverted ? "Turn back" : "Invert"}</button>            
+          </div>
+        );
+      }
+
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+  </body>
+</html>
