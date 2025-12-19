@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Super Converter</title>
+    <!-- React & Babel CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4 font-sans">
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+      // ==========================================
+      // Minutes To Hours Component
+      // ==========================================
+      function MinutesToHours() {
+        const [amount, setAmount] = React.useState(0);
+        const [inverted, setInverted] = React.useState(false);
+        const onChange = (e) => {
+          setAmount(e.target.value);
+        };
+
+        const hours = Number((amount / 60).toFixed(2));
+        const reset = () => setAmount(0);
+        const onInvert = () => {
+          reset();
+          setInverted((current) => !current);
+        };
+
+        const inputClasses = "w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition disabled:bg-gray-100 disabled:text-gray-400";
+        const labelClasses = "block text-sm font-medium text-gray-700 mb-1";
+
+        return (
+          <div className="space-y-6 mt-6">
+            <div>
+              <label htmlFor="minutes" className={labelClasses}>Minutes</label>
+              <input
+                id="minutes"
+                value={inverted ? amount * 60 : amount}
+                placeholder="Enter a Minutes"
+                type="number"
+                onChange={onChange}
+                disabled={inverted}
+                className={inputClasses}
+              />
+            </div>
+            <div>
+              <label htmlFor="hours" className={labelClasses}>Hours</label>
+              <input
+                id="hours"
+                value={inverted ? amount : hours}
+                placeholder="Enter an Hours"
+                type="number"
+                onChange={onChange}
+                disabled={!inverted}
+                className={inputClasses}
+              />
+            </div>
+            <div className="flex space-x-3 pt-2">
+              <button
+                onClick={reset}
+                className="w-1/2 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition duration-200"
+              >
+                Reset
+              </button>
+              <button
+                onClick={onInvert}
+                className={`w-1/2 py-3 rounded-lg font-semibold transition duration-200 text-white ${inverted ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-blue-600 hover:bg-blue-700'}`}
+              >
+                {inverted ? "Invert (M→H)" : "Invert (H→M)"}
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      // ==========================================
+      // Km To Miles Component
+      // ==========================================
+      function KmToMiles() {
+        const [amount, setAmount] = React.useState(0);
+        const [inverted, setInverted] = React.useState(false);
+        const onChange = (e) => {
+          setAmount(e.target.value);
+        };
+
+        const reset = () => setAmount(0);
+        const onInvert = () => {
+          reset();
+          setInverted((current) => !current);
+        };
+
+        const KM_TO_MILE_RATE = 0.621371;
+
+        const kilometersValue = inverted ? (amount / KM_TO_MILE_RATE).toFixed(2) : amount;
+        const milesValue = inverted ? amount : (amount * KM_TO_MILE_RATE).toFixed(2);
+
+        const inputClasses = "w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none transition disabled:bg-gray-100 disabled:text-gray-400";
+        const labelClasses = "block text-sm font-medium text-gray-700 mb-1";
+
+        return (
+          <div className="space-y-6 mt-6">
+            <div>
+              <label htmlFor="Kilometers" className={labelClasses}>Kilometers</label>
+              <input
+                id="Kilometers"
+                value={kilometersValue}
+                placeholder="Enter a Kilometers"
+                type="number"
+                onChange={onChange}
+                disabled={inverted}
+                className={inputClasses}
+              />
+            </div>
+            <div>
+              <label htmlFor="miles" className={labelClasses}>Miles</label>
+              <input
+                id="miles"
+                value={milesValue}
+                placeholder="Enter a Miles"
+                type="number"
+                onChange={onChange}
+                disabled={!inverted}
+                className={inputClasses}
+              />
+            </div>
+            <div className="flex space-x-3 pt-2">
+              <button
+                onClick={reset}
+                className="w-1/2 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition duration-200"
+              >
+                Reset
+              </button>
+              <button
+                onClick={onInvert}
+                className={`w-1/2 py-3 rounded-lg font-semibold transition duration-200 text-white ${inverted ? 'bg-teal-600 hover:bg-teal-700' : 'bg-green-600 hover:bg-green-700'}`}
+              >
+                {inverted ? "Invert (M→Km)" : "Invert (Km→M)"}
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      // ==========================================
+      // Main App Component
+      // ==========================================
+      function App() {
+        const [index, setIndex] = React.useState("-1");
+        const onSelect = (e) => {
+          setIndex(e.target.value);
+        };
+
+        return (
+          <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full">
+            <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-6">
+              Super Converter
+            </h1>
+            
+            <div className="mb-4">
+              <label htmlFor="unit-select" className="block text-sm font-medium text-gray-600 mb-2">
+                Select the unit to convert
+              </label>
+              <select
+                id="unit-select"
+                onChange={onSelect}
+                value={index}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition bg-white"
+              >
+                <option value="-1">Select your units</option>
+                <option value="0">Minutes & Hours (Time)</option>
+                <option value="1">Km & Miles (Distance)</option>
+              </select>
+            </div>
+
+            {index === "-1" ? (
+              <div className="text-center text-gray-500 py-10 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
+                Please select a unit to start converting.
+              </div>
+            ) : null}
+            
+            {index === "0" ? <MinutesToHours /> : null}
+            {index === "1" ? <KmToMiles /> : null}
+          </div>
+        );
+      }
+
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+  </body>
+</html>
